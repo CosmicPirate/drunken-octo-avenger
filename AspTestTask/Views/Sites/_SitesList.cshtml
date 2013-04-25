@@ -1,0 +1,92 @@
+﻿@model IEnumerable<AspTestTask.Models.Site>
+
+
+    <script>
+        var deleteAction = "@Url.RouteUrl(new { action = "delete" })/";
+        $(function () {
+
+            $(".del_item").click(function (ev) {
+                ev.preventDefault();
+                var self = this;
+                $("#accept_dialog").dialog({
+                    buttons: [
+                        {
+                            text: "Да",
+                            click: function () {
+                                var itemid = $(self).attr("itemid");
+                                var form = $("<form action="+deleteAction + itemid+" method='POST'></form>");
+                                form.submit();
+
+                                $(this).dialog("close");
+                            }
+                        },
+                        {
+                            text: "Нет",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    ]
+                });
+            });
+
+        })
+    </script>
+
+
+<table>
+    <thead>
+        <th>
+            @Html.DisplayNameFor(model => model.SiteName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Logo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rating)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HostingPlan.Hosting)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Last_edited)
+        </th>
+        <th></th>
+    </thead>
+<tbody>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SiteName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @if (item.Logo != null)
+            {
+                <img src="@Html.DisplayFor(modelItem => item.Logo)" alt="Logo" width="50" />
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rating)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HostingPlan.Hosting)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Last_edited)
+        </td>
+        <td>
+            @Html.ActionLink("Редактировать", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "del_item", @itemid = item.Id })
+        </td>
+    </tr>
+}
+</tbody>
+</table>
+
+<div id="accept_dialog" style="display: none">Точно удалить?</div>

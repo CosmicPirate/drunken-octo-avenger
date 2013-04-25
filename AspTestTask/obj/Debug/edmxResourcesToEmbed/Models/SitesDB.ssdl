@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SitesDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="SitesDBModelStoreContainer">
+    <EntitySet Name="HostingPlans" EntityType="SitesDBModel.Store.HostingPlans" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Sites" EntityType="SitesDBModel.Store.Sites" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Sites_ToTable_HostingPlans" Association="SitesDBModel.Store.FK_Sites_ToTable_HostingPlans">
+      <End Role="HostingPlans" EntitySet="HostingPlans" />
+      <End Role="Sites" EntitySet="Sites" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="HostingPlans">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Hosting" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="Paying" Type="bit" Nullable="false" />
+    <Property Name="Plan" Type="decimal" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sites">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="SiteName" Type="nvarchar" Nullable="false" MaxLength="200" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="Logo" Type="varchar" MaxLength="200" />
+    <Property Name="Rating" Type="int" />
+    <Property Name="Hosting" Type="int" />
+    <Property Name="Last_edited" Type="datetime" Nullable="false" StoreGeneratedPattern="None" />
+  </EntityType>
+  <Association Name="FK_Sites_ToTable_HostingPlans">
+    <End Role="HostingPlans" Type="SitesDBModel.Store.HostingPlans" Multiplicity="0..1" />
+    <End Role="Sites" Type="SitesDBModel.Store.Sites" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HostingPlans">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Sites">
+        <PropertyRef Name="Hosting" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
